@@ -17,16 +17,19 @@ const App = () => {
       <Button clickHandler={voteNeutral} text="neutral"/>
       <Button clickHandler={voteBad} text="bad"/>
       <Header text="statistics"/>
-      <DisplayNumber text="good" number={good}/>
-      <DisplayNumber text="neutral" number={neutral}/>
-      <DisplayNumber text="bad" number={bad}/>
+      <DisplayNumber text="good" number={good} end_text=""/>
+      <DisplayNumber text="neutral" number={neutral} end_text=""/>
+      <DisplayNumber text="bad" number={bad} end_text=""/>
+      <DisplayNumber text="all" number={good+neutral+bad} end_text=""/>
+      <DisplayNumber text="average" number={(good-bad)/(good+neutral+bad)} end_text=""/>
+      <DisplayNumber text="positive" number={good/(good+neutral+bad)*100} end_text="%"/>
     </div>
   )
 }
 
 const Header = ({text}) => <h1>{text}</h1>
 
-const DisplayNumber = ({text, number}) => <p>{text} {number}</p>
+const DisplayNumber = ({text, number, end_text}) => <p>{text} {number} {end_text}</p>
 
 const Button = ({clickHandler, text}) => {
   return(
