@@ -17,7 +17,7 @@ const App = () => {
 
   const chooseNext = () => {
     let rand_int = Math.floor(Math.random() * anecdotes.length)
-    console.log(rand_int)
+    console.log("index of next random anecdote: ", rand_int)
     return (
       setSelected(rand_int)
     )
@@ -33,11 +33,37 @@ const App = () => {
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>has {points[selected]} votes</p>
       <Button text="vote" handleClick={voteAnecdote}/>
       <Button text="next anecdote" handleClick={chooseNext}/>
+      <BestAnecdote points={points} anecdotes={anecdotes}/>
     </div>
+  )
+}
+
+const BestAnecdote = ({points, anecdotes}) => {
+  let max_votes = Math.max(...points)
+  
+  let i = 0
+  let max_i = 0
+  while(i < points.length){
+    if (points[i] == max_votes){
+      max_i = i
+      i = points.length
+    }
+    else{
+      i ++
+    }
+  }
+
+  return(
+    <>
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[max_i]}</p>
+      <p>has {max_votes} votes</p>
+    </>
   )
 }
 
