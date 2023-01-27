@@ -12,24 +12,28 @@ const App = () => {
 
   return (
     <div>
-      <Header text="give feedback"/>
+      <h1>give feedback</h1>
       <Button clickHandler={voteGood} text="good"/>
       <Button clickHandler={voteNeutral} text="neutral"/>
       <Button clickHandler={voteBad} text="bad"/>
-      <Header text="statistics"/>
-      <DisplayNumber text="good" number={good} end_text=""/>
-      <DisplayNumber text="neutral" number={neutral} end_text=""/>
-      <DisplayNumber text="bad" number={bad} end_text=""/>
-      <DisplayNumber text="all" number={good+neutral+bad} end_text=""/>
-      <DisplayNumber text="average" number={(good-bad)/(good+neutral+bad)} end_text=""/>
-      <DisplayNumber text="positive" number={good/(good+neutral+bad)*100} end_text="%"/>
+      <Statistics good={good} neutral={neutral} bad={bad}/>
     </div>
   )
 }
 
-const Header = ({text}) => <h1>{text}</h1>
-
-const DisplayNumber = ({text, number, end_text}) => <p>{text} {number} {end_text}</p>
+const Statistics = ({good, neutral, bad}) => {
+  return (
+    <>
+      <h1>statistics</h1>
+      <p>gooooood {good}</p>
+      <p>neutral {neutral}</p>
+      <p>bad {bad}</p>
+      <p>all {good+neutral+bad}</p>
+      <p>average {(good-bad)/(good+neutral+bad)}</p>
+      <p>positive {good/(good+neutral+bad)*100} %</p>
+    </>
+  )
+}
 
 const Button = ({clickHandler, text}) => {
   return(
