@@ -70,10 +70,8 @@ const Part = ({part}) => {
 }
 
 const Total = ({course}) => {
-  let sum = 0
-  for (let i = 0; i < course.parts.length; i++){
-    sum = sum + course.parts[i].exercises
-  }
+  let sum = course.parts.reduce( (accum, current) => accum+current.exercises, 0)
+  
   return ( 
     <>
       <p><b>total of {sum} exercises</b></p>
