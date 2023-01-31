@@ -38,18 +38,39 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>filter shown with<input value={filter} onChange={handleFilterChange}/></div>
-      <h2>add a new</h2>
-      <form onSubmit={addName}>
-        <div>name: <input value={newName} onChange={handleNameChange}/></div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
-        <div><button type="submit">add</button></div>
-      </form>
-      <h2>Numbers</h2>
+      <Filter value={filter} eventHandler={handleFilterChange}/>
+      <h3>Add a new</h3>
+      <PersonForm newName={newName} newNumber={newNumber} handleName={handleNameChange} handleNumber={handleNumberChange} handleSubmit={addName}/>
+      <h3>Numbers</h3>
+      <Persons persons={persons} filter={filter}/>
+    </div>
+  )
+}
+
+const Filter = ({value, eventHandler}) => {
+  return(
+    <div>filter shown with<input value={value} onChange={eventHandler}/></div>
+  )
+}
+
+const PersonForm = ({newName, newNumber, handleName, handleNumber, handleSubmit}) => {
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>name: <input value={newName} onChange={handleName}/></div>
+      <div>number: <input value={newNumber} onChange={handleNumber}/></div>
+      <div><button type="submit">add</button></div>
+    </form>
+  )
+}
+
+const Persons = ({persons, filter}) => {
+  return(
+    <>
       {persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase())).map(
         person => <p key={person.name}>{person.name} {person.number}</p>
       )}
-    </div>)
+    </>
+  )
 }
 
 export default App
