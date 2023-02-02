@@ -6,6 +6,7 @@ const App = () => {
   const [newName, setName] = useState("")
   const [newNumber, setNumber] = useState("")
   const [filter, setFilter] = useState("")
+  const [notificationMessage, setNotificationMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -26,6 +27,10 @@ const App = () => {
             setPersons(persons.map(person => person.name !== changedPerson.name ? person : changedPerson))
             setName("")
             setNumber("")
+            setNotificationMessage(`Changed number of ${changedPerson.name}`)
+            setTimeout(() => {
+              setNotificationMessage(null)
+            }, 4000)
           })
       }
     }else{
@@ -36,6 +41,10 @@ const App = () => {
           setPersons(persons.concat(createdPerson))
           setName("")
           setNumber("")
+          setNotificationMessage(`Added ${createdPerson.name}`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 4000)
         })
     }
   }
@@ -59,6 +68,10 @@ const App = () => {
           .deletePerson(person.id)
           .then((deleted) => {
             setPersons(persons.filter(p => p.name !== person.name))
+            setNotificationMessage(`Deleted ${person.name}`)
+            setTimeout(() => {
+              setNotificationMessage(null)
+            }, 4000)
           })
       }
     }
@@ -68,6 +81,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage}/>
       <Filter value={filter} eventHandler={handleFilterChange}/>
       <h3>Add a new</h3>
       <PersonForm newName={newName} newNumber={newNumber} handleName={handleNameChange} handleNumber={handleNumberChange} handleSubmit={addName}/>
@@ -102,6 +116,27 @@ const Persons = ({persons, filter, handleDelete}) => {
         </p>
       )}
     </>
+  )
+}
+
+const Notification = ({message}) => {
+  const notificationStyle = {
+    color: "green",
+    fontStyle: "italic",
+    fontSize: "20px",
+    borderStyle: "solid",
+    borderRadius: "10px",
+    padding: "3px",
+    marginBottom: "10px"
+  }
+
+  if (message === null){
+    return null
+  }
+  return(
+    <div style={notificationStyle}>
+      {message}
+    </div>
   )
 }
 
