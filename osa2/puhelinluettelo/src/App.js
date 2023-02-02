@@ -7,6 +7,7 @@ const App = () => {
   const [newNumber, setNumber] = useState("")
   const [filter, setFilter] = useState("")
   const [notificationMessage, setNotificationMessage] = useState(null)
+  const [notificationError, setNotificationError] = useState(false)
 
   useEffect(() => {
     personService
@@ -29,6 +30,15 @@ const App = () => {
             setNumber("")
             setNotificationMessage(`Changed number of ${changedPerson.name}`)
             setTimeout(() => {
+              setNotificationMessage(null)
+            }, 4000)
+          })
+          .catch(error => {
+            setNotificationError(true)
+            setNotificationMessage(`Information of ${existingPerson.name} has already been removed from server`)
+            setPersons(persons.filter(p => p.name !== existingPerson.name))
+            setTimeout(() => {
+              setNotificationError(false)
               setNotificationMessage(null)
             }, 4000)
           })
@@ -81,7 +91,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notificationMessage}/>
+      <Notification message={notificationMessage} notificationError={notificationError}/>
       <Filter value={filter} eventHandler={handleFilterChange}/>
       <h3>Add a new</h3>
       <PersonForm newName={newName} newNumber={newNumber} handleName={handleNameChange} handleNumber={handleNumberChange} handleSubmit={addName}/>
@@ -119,8 +129,8 @@ const Persons = ({persons, filter, handleDelete}) => {
   )
 }
 
-const Notification = ({message}) => {
-  const notificationStyle = {
+const Notification = ({message, notificationError}) => {
+  let notificationStyle = {
     color: "green",
     fontStyle: "italic",
     fontSize: "20px",
@@ -128,6 +138,10 @@ const Notification = ({message}) => {
     borderRadius: "10px",
     padding: "3px",
     marginBottom: "10px"
+  }
+
+  if (notificationError){
+    notificationStyle = {...notificationStyle, color: "red"}
   }
 
   if (message === null){
