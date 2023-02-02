@@ -20,17 +20,24 @@ function App() {
     setFilter(event.target.value)
   }
 
+  const handleClick = (country) => {
+    const clickHandler = () => {
+      setFilter(country)
+    }
+    return clickHandler
+  }
+
   return (
     <>
       <div>
         find countries<input value={filter} onChange={handleSearch}/>
       </div>
-      <SearchResults filter={filter} data={data}/>
+      <SearchResults filter={filter} data={data} handleClick={handleClick}/>
     </>
   )
 }
 
-const SearchResults = ({filter, data}) => {
+const SearchResults = ({filter, data, handleClick}) => {
   const filteredData = data.filter(country => country.name.common.toLowerCase().includes(filter.toLowerCase()) === true)
   if (filter === ""){
     return null
@@ -39,7 +46,11 @@ const SearchResults = ({filter, data}) => {
     return <p>Too many matches, specify another filter</p>
   }
   else if (filteredData.length > 1 && filteredData.length <= 10){
-    return filteredData.map(country => <p key={country.name.common}>{country.name.common}</p>)
+    return filteredData.map(country => 
+        <p key={country.name.common}>
+          {country.name.common}
+          <button onClick={handleClick(country.name.common)}>show</button>
+        </p>)
   }
   else if (filteredData.length === 1){
     return <CountryDetails country={filteredData[0]}/>
