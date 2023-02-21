@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -14,6 +15,7 @@ const App = () => {
   const [url, setUrl] = useState('')
 
   const [blogs, setBlogs] = useState([])
+  const [message, setMessage] = useState([])
 
   /*  EFFECTS  */
   useEffect(() => {
@@ -72,7 +74,10 @@ const App = () => {
       setUser(user)
     }
     catch{
-      console.log("error during login")
+      setMessage(['wrong username or password', 'red'])
+      setTimeout(() => {
+        setMessage([])
+      }, 3000)
     }
   }
 
@@ -83,17 +88,29 @@ const App = () => {
 
   const handleCreate = async (event) => {
     event.preventDefault()
-    const newBlog = {
-      title: title,
-      author: author,
-      url: url
+    try {
+      const newBlog = {
+        title: title,
+        author: author,
+        url: url
+      }
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+      await blogService.create(newBlog)
+      const allBlogs = await blogService.getAll()
+      setBlogs(allBlogs)
+      setMessage([`a new blog ${newBlog.title} by ${newBlog.author} added`, 'green'])
+      setTimeout(() => {
+        setMessage([])
+      }, 3000)
     }
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-    await blogService.create(newBlog)
-    const allBlogs = await blogService.getAll()
-    setBlogs(allBlogs)
+    catch (error){
+      setMessage([error.response.data.error, 'red'])
+      setTimeout(() => {
+        setMessage([])
+      }, 3000)
+    }
   }
 
   /*  RETURN  */
@@ -101,6 +118,7 @@ const App = () => {
     return(
       <div>
         <h2>log in to application</h2>
+        <Notification notification={message}/>
         <form onSubmit={handleLogin}>
           <div>username <input value={username} onChange={handleUsernameChange}/></div>
           <div>password <input type="password" value={password} onChange={handlePasswordChange}/></div>
@@ -113,6 +131,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification notification={message}/>
       <div>{user.name} logged in <button onClick={handleLogout}>logout</button></div>
       <br></br>
       <h2>create new</h2>
