@@ -9,8 +9,8 @@ import loginService from './services/login'
 const App = () => {
   /*  STATES  */
   const [user, setUser] = useState(null)
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   const [blogs, setBlogs] = useState([])
   const [message, setMessage] = useState([])
@@ -19,7 +19,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const App = () => {
 
   /*  EVENT HANDLERS  */
 
-      /*FORM FIELDS*/
+  /*FORM FIELDS*/
   const handleUsernameChange = (event) => {
     setUsername(event.target.value)
   }
@@ -42,7 +42,7 @@ const App = () => {
     setPassword(event.target.value)
   }
 
-      /*BUTTONS*/
+  /*BUTTONS*/
   const handleLogin = async (event) => {
     event.preventDefault()
     try{
@@ -53,13 +53,13 @@ const App = () => {
       window.localStorage.setItem(
         'loggedUser', JSON.stringify(user)
       )
-      
+
       blogService.setToken(user.token)
       setUsername('')
       setPassword('')
       setUser(user)
     }
-    catch{
+    catch(error){
       setMessage(['wrong username or password', 'red'])
       setTimeout(() => {
         setMessage([])
@@ -67,7 +67,7 @@ const App = () => {
     }
   }
 
-  const handleLogout = async (event) => {
+  const handleLogout = async () => {
     window.localStorage.removeItem('loggedUser')
     setUser(null)
   }
@@ -147,7 +147,7 @@ const App = () => {
       {blogs
         .sort((a,b) => b.likes-a.likes)
         .map(blog => <Blog key={blog.id} blog={blog} addLike={addLike} removeBlog={removeBlog} user={user}/>
-      )}
+        )}
     </div>
   )
 }

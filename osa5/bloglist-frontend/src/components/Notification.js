@@ -1,21 +1,27 @@
-const Notification = ({notification}) => {
-    if (notification.length === 0){
-        return <></>
-    }
+import PropTypes from 'prop-types'
 
-    const notificationStyle = {
-        color: notification[1],
-        fontSize: 24,
-        borderStyle: 'solid',
-        padding: 2,
-        marginBottom: 10
-    }
+const Notification = ({ notification }) => {
+  if (notification.length === 0){
+    return <></>
+  }
 
-    return(
-        <div style={notificationStyle}>
-            <em>{notification[0]}</em>
-        </div>
-    )
+  const notificationStyle = {
+    color: notification[1],
+    fontSize: 24,
+    borderStyle: 'solid',
+    padding: 2,
+    marginBottom: 10
+  }
+
+  return(
+    <div style={notificationStyle}>
+      <em>{notification[0]}</em>
+    </div>
+  )
+}
+
+Notification.propTypes = {
+  notification: PropTypes.array.isRequired
 }
 
 export default Notification

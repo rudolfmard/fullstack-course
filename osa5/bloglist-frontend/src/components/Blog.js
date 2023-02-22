@@ -1,9 +1,9 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-const Blog = ({blog, addLike, removeBlog, user}) => {
+const Blog = ({ blog, addLike, removeBlog, user }) => {
   const [expand, setExpand] = useState(false)
 
-  const removeButtonStyle = {display: user.username === blog.user.username ? '' : 'none'}
+  const removeButtonStyle = { display: user.username === blog.user.username ? '' : 'none' }
 
   const blogStyle = {
     paddingTop: 10,
@@ -34,20 +34,20 @@ const Blog = ({blog, addLike, removeBlog, user}) => {
   if (expand){
     return(
       <div style={blogStyle}>
-        {blog.title} {blog.author}<button style={{marginLeft: 5}} onClick={() => setExpand(!expand)}>hide</button><br/>
+        {blog.title} {blog.author}<button style={{ marginLeft: 5 }} onClick={() => setExpand(!expand)}>hide</button><br/>
         {blog.url}<br/>
-        likes {blog.likes}<button style={{marginLeft: 5}} onClick={likeBlog}>like</button><br/>
+        likes {blog.likes}<button style={{ marginLeft: 5 }} onClick={likeBlog}>like</button><br/>
         {blog.user.name}<br/>
         <button style={removeButtonStyle} onClick={remove}>remove</button>
-      </div>  
+      </div>
     )
   }
   return(
     <div style={blogStyle}>
       {blog.title} {blog.author}
-      <button style={{marginLeft: 5}} onClick={() => setExpand(!expand)}>view</button>
-    </div>  
+      <button style={{ marginLeft: 5 }} onClick={() => setExpand(!expand)}>view</button>
+    </div>
   )
-  }
+}
 
 export default Blog
