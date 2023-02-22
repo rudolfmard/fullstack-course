@@ -104,6 +104,20 @@ const App = () => {
     }
   }
 
+  const removeBlog = async (id) => {
+    try{
+      await blogService.remove(id)
+      const allBlogs = await blogService.getAll()
+      setBlogs(allBlogs)
+    }
+    catch(error){
+      setMessage([error.response.data.error, 'red'])
+      setTimeout(() => {
+        setMessage([])
+      }, 3000)
+    }
+  }
+
   /*  RETURN  */
   if (user === null){
     return(
@@ -132,7 +146,7 @@ const App = () => {
 
       {blogs
         .sort((a,b) => b.likes-a.likes)
-        .map(blog => <Blog key={blog.id} blog={blog} addLike={addLike}/>
+        .map(blog => <Blog key={blog.id} blog={blog} addLike={addLike} removeBlog={removeBlog} user={user}/>
       )}
     </div>
   )
