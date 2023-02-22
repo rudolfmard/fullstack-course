@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
@@ -10,10 +11,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
 
   const [blogs, setBlogs] = useState([])
   const [message, setMessage] = useState([])
@@ -43,18 +40,6 @@ const App = () => {
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value)
-  }
-
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value)
-  }
-
-  const handleAuthorChange = (event) => {
-    setAuthor(event.target.value)
-  }
-
-  const handleUrlChange = (event) => {
-    setUrl(event.target.value)
   }
 
       /*BUTTONS*/
@@ -87,21 +72,12 @@ const App = () => {
     setUser(null)
   }
 
-  const handleCreate = async (event) => {
-    event.preventDefault()
+  const addBlog = async (blogObject) => {
     try {
-      const newBlog = {
-        title: title,
-        author: author,
-        url: url
-      }
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      await blogService.create(newBlog)
+      await blogService.create(blogObject)
       const allBlogs = await blogService.getAll()
       setBlogs(allBlogs)
-      setMessage([`a new blog ${newBlog.title} by ${newBlog.author} added`, 'green'])
+      setMessage([`a new blog ${blogObject.title} by ${blogObject.author} added`, 'green'])
       setTimeout(() => {
         setMessage([])
       }, 3000)
@@ -137,13 +113,7 @@ const App = () => {
       <br></br>
 
       <Togglable buttonLabel='create new blog'>
-      <h2>create new</h2>
-      <form onSubmit={handleCreate}>
-        <div>title:<input value={title} onChange={handleTitleChange}/></div>
-        <div>author:<input value={author} onChange={handleAuthorChange}/></div>
-        <div>url:<input value={url} onChange={handleUrlChange}/></div>
-        <div><button type="submit">create</button></div>
-      </form>
+        <BlogForm createBlog={addBlog}/>
       </Togglable>
 
       {blogs.map(blog =>
