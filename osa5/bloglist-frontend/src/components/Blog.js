@@ -11,14 +11,10 @@ const Blog = ({blog}) => {
     marginBottom: 5
   }
 
-  const toggleExpand = () => {
-    setExpand(!expand)
-  }
-
   if (expand){
     return(
       <div style={blogStyle}>
-        {blog.title} {blog.author}<button style={{marginLeft: 5}} onClick={toggleExpand}>hide</button><br/>
+        {blog.title} {blog.author}<button style={{marginLeft: 5}} onClick={() => setExpand(!expand)}>hide</button><br/>
         {blog.url}<br/>
         likes {blog.likes}<button style={{marginLeft: 5}}>like</button><br/>
         {blog.user.name}
@@ -28,7 +24,7 @@ const Blog = ({blog}) => {
   return(
     <div style={blogStyle}>
       {blog.title} {blog.author}
-      <button style={{marginLeft: 5}} onClick={toggleExpand}>view</button>
+      <button style={{marginLeft: 5}} onClick={() => setExpand(!expand)}>view</button>
     </div>  
   )
   }
