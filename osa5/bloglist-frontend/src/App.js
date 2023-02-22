@@ -90,6 +90,20 @@ const App = () => {
     }
   }
 
+  const addLike = async (blogObject) => {
+    try{
+      await blogService.modify(blogObject)
+      const allBlogs = await blogService.getAll()
+      setBlogs(allBlogs)
+    }
+    catch (error){
+      setMessage([error.response.data.error, 'red'])
+      setTimeout(() => {
+        setMessage([])
+      }, 3000)
+    }
+  }
+
   /*  RETURN  */
   if (user === null){
     return(
@@ -117,7 +131,7 @@ const App = () => {
       </Togglable>
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} addLike={addLike}/>
       )}
     </div>
   )
