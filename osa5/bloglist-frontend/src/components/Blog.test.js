@@ -30,7 +30,7 @@ test('renders un-togglable content only', async () => {
 })
 
 test('Clicking the button shows togglable content', async () => {
-  const blog = {
+  const testBlog = {
     user: {
       username: 'test user',
       name: 'Testi Jannu'
@@ -46,7 +46,7 @@ test('Clicking the button shows togglable content', async () => {
   const mockHandlerRemove = jest.fn()
 
   render(
-    <Blog blog={blog} addLike={mockHandlerLike} removeBlog={mockHandlerRemove} username={'test user'}/>
+    <Blog blog={testBlog} addLike={mockHandlerLike} removeBlog={mockHandlerRemove} username={'test user'}/>
   )
 
   const user = userEvent.setup()
@@ -61,4 +61,35 @@ test('Clicking the button shows togglable content', async () => {
 
   const element3 = screen.getByText('likes 10', { exact: false })
   expect(element3).toBeDefined()
+})
+
+test('Clicking like button twice calls the eventhandler two times', async () => {
+  const testBlog = {
+    user: {
+      username: 'test user',
+      name: 'Testi Jannu'
+    },
+    likes: 10,
+    author: 'test author',
+    title: 'test title',
+    url: 'test url',
+    id: 'test id'
+  }
+
+  const mockHandlerLike = jest.fn()
+  const mockHandlerRemove = jest.fn()
+
+  render(
+    <Blog blog={testBlog} addLike={mockHandlerLike} removeBlog={mockHandlerRemove} username={'test user'}/>
+  )
+
+  const user = userEvent.setup()
+  const button = screen.getByText('view')
+  await user.click(button)
+
+  const likeButton = screen.getByText('like')
+  await user.click(likeButton)
+  await user.click(likeButton)
+
+  expect(mockHandlerLike.mock.calls).toHaveLength(2)
 })
