@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
-const Blog = ({ blog, addLike, removeBlog, user }) => {
+const Blog = ({ blog, addLike, removeBlog, username }) => {
   const [expand, setExpand] = useState(false)
 
-  const removeButtonStyle = { display: user.username === blog.user.username ? '' : 'none' }
+  const removeButtonStyle = { display: username === blog.user.username ? '' : 'none' }
 
   const blogStyle = {
     paddingTop: 10,
