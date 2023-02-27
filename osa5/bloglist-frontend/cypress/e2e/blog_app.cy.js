@@ -1,12 +1,21 @@
 describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
+
     const testUser = {
       name: 'Poppy Dickings',
       username: 'pdick',
       password: 'salasana'
     }
     cy.request('POST', 'http://localhost:3003/api/users', testUser)
+
+    const testUser2 = {
+      name: 'Dicky Poppings',
+      username: 'dpop',
+      password: '1234'
+    }
+    cy.request('POST', 'http://localhost:3003/api/users', testUser2)
+
     cy.visit('http://localhost:3000')
   })
 
@@ -77,6 +86,20 @@ describe('Blog app', function() {
       cy.contains('view').click()
       cy.contains('remove').click()
       cy.contains('test title test author').should('not.exist')
+    })
+
+    it('Only user who added the blog can see remove button', function(){
+      cy.contains('view').click()
+      cy.contains('remove')
+
+      cy.contains('logout').click()
+
+      cy.get('#username').type('dpop')
+      cy.get('#password').type('1234')
+      cy.get('#login-button').click()
+
+      cy.contains('view').click()
+      cy.contains('remove').and('have.css', 'display', 'none')
     })
   })
 })
