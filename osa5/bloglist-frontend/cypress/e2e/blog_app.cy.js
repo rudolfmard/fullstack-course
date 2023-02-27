@@ -51,4 +51,25 @@ describe('Blog app', function() {
       cy.contains('test title test author')
     })
   })
+
+  describe('When a blog has been created', function(){
+    beforeEach(function(){
+      cy.get('#username').type('pdick')
+      cy.get('#password').type('salasana')
+      cy.get('#login-button').click()
+
+      cy.get('#togglableShow-button').click()
+      cy.get('#title').type('test title')
+      cy.get('#author').type('test author')
+      cy.get('#url').type('testurl.com')
+      cy.get('#create-button').click()
+    })
+
+    it('A blog can be liked', function(){
+      cy.contains('view').click()
+      cy.contains('likes 0')
+      cy.contains('like').click()
+      cy.contains('likes 1')
+    })
+  })
 })
