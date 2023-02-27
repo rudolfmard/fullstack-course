@@ -101,5 +101,21 @@ describe('Blog app', function() {
       cy.contains('view').click()
       cy.contains('remove').and('have.css', 'display', 'none')
     })
+
+    it('The blogs are sorted by likes', function(){
+      cy.get('#title').type('test title2')
+      cy.get('#author').type('test author2')
+      cy.get('#url').type('testurl2.com')
+      cy.get('#create-button').click()
+
+      cy.contains('test title2 test author2')
+      cy.get('.view-button').eq(0).click()
+      cy.get('.view-button').click()
+
+      cy.get('.blog').eq(1).should('contain', 'test title2 test author2').and('contain', 'likes 0')
+
+      cy.get('.like-button').eq(1).click()
+      cy.get('.blog').eq(0).should('contain', 'test title2 test author2').and('contain', 'likes 1')
+    })
   })
 })

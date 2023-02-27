@@ -33,10 +33,10 @@ const Blog = ({ blog, addLike, removeBlog, username }) => {
 
   if (expand){
     return(
-      <div style={blogStyle}>
+      <div className='blog' style={blogStyle}>
         {blog.title} {blog.author}<button style={{ marginLeft: 5 }} onClick={() => setExpand(!expand)}>hide</button><br/>
         {blog.url}<br/>
-        likes {blog.likes}<button style={{ marginLeft: 5 }} onClick={likeBlog}>like</button><br/>
+        likes {blog.likes}<button className='like-button' style={{ marginLeft: 5 }} onClick={likeBlog}>like</button><br/>
         {blog.user.name}<br/>
         <button style={removeButtonStyle} onClick={remove}>remove</button>
       </div>
@@ -45,7 +45,7 @@ const Blog = ({ blog, addLike, removeBlog, username }) => {
   return(
     <div style={blogStyle}>
       {blog.title} {blog.author}
-      <button style={{ marginLeft: 5 }} onClick={() => setExpand(!expand)}>view</button>
+      <button className='view-button' style={{ marginLeft: 5 }} onClick={() => setExpand(!expand)}>view</button>
     </div>
   )
 }
