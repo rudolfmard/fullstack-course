@@ -22,4 +22,4 @@ const AnecdoteForm = () => {
     )
   }
   
-  export default AnecdoteForm
+export default AnecdoteForm
